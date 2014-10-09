@@ -1,0 +1,8 @@
+.DS_Store
+*~.nib
+*xcuserdata/
+*.mode1v3
+*.mode2v3
+*.pbxuser
+*.xcworkspace
+*.moved-aside
