@@ -24,6 +24,7 @@
 		57A69A6019E6926300C2ECC1 /* 466C.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A69A5519E6926300C2ECC1 /* 466C.cpp */; };
 		57A69A6219E6943500C2ECC1 /* 471C.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A69A6119E6943500C2ECC1 /* 471C.cpp */; };
 		57F2775119CC300A00D1B768 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F2775019CC300A00D1B768 /* main.cpp */; };
+		57FE1CCD19E71F8E00648EB4 /* 474F.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FE1CCB19E71F8E00648EB4 /* 474F.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -67,6 +68,7 @@
 		57A69A6119E6943500C2ECC1 /* 471C.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = 471C.cpp; sourceTree = "<group>"; };
 		57F2774D19CC300A00D1B768 /* Codeforces */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Codeforces; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F2775019CC300A00D1B768 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		57FE1CCB19E71F8E00648EB4 /* 474F.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = 474F.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				57A69A4B19E6926300C2ECC1 /* 474C.cpp */,
 				57A69A4D19E6926300C2ECC1 /* 474D.cpp */,
 				57A69A4C19E6926300C2ECC1 /* 474E.cpp */,
+				57FE1CCB19E71F8E00648EB4 /* 474F.cpp */,
 			);
 			path = Codeforces;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 				57A69A5619E6926300C2ECC1 /* 474C.cpp in Sources */,
 				57A69A5819E6926300C2ECC1 /* 474D.cpp in Sources */,
 				57A69A6219E6943500C2ECC1 /* 471C.cpp in Sources */,
+				57FE1CCD19E71F8E00648EB4 /* 474F.cpp in Sources */,
 				57A69A5F19E6926300C2ECC1 /* 471A.cpp in Sources */,
 				57A69A5719E6926300C2ECC1 /* 474E.cpp in Sources */,
 				57A69A5B19E6926300C2ECC1 /* 472B.cpp in Sources */,
