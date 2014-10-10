@@ -36,6 +36,7 @@ namespace {
     const int MOD = 1e9 + 7;
     
     template<typename T> inline T gcd(T a, T b) { return b ? gcd(b, a%b) : a; }
+    template<typename T, typename U> inline std::pair<T, U> mpair(T a, U b) { return std::make_pair(a, b); }
     
 #define REP(k,a) for(int k=0; k < (a); ++k)
 #define ALL(a) begin(a), end(a)
@@ -43,69 +44,61 @@ namespace {
 #define D(a) cout << #a ": " << a << endl;
     
     int n;
-    vll s;
+    vi s;
     int t;
     
-    using rmq_t = std::pair<ll, int>;   // min(s[i]) -> count
+    struct Node {
+        int min, minCount, gcd;
+        
+        explicit Node(int min = INF, int minCount = 0, int gcd = 0) : min(min), minCount(minCount), gcd(gcd) {}
+    };
+    using rmq_t = Node;     // min(s[i]) -> count; gcd
     using rmq_v = std::vector<rmq_t>;
-    rmq_v st_min_vec;
-    rmq_v st_gcd_vec; // segment tree for gcd
+    rmq_v st_min_vec; // segment tree
     
-    template<bool IsGcd>
     inline rmq_t combine(const rmq_t& left, const rmq_t& right) {
-        if (IsGcd) {
-            ll newGcd = gcd(left.first, right.first);
-            return std::make_pair(newGcd, 1);
-        } else {
-            if (left.first < right.first) {
-                return left;
-            } else if (left.first > right.first) {
-                return right;
-            }
-            return std::make_pair(left.first, left.second + right.second);
-        }
+        rmq_t comb;
+        comb.gcd = gcd(left.gcd, right.gcd);
+        comb.min = std::min(left.min, right.min);
+        if (comb.min == left.min) comb.minCount += left.minCount;
+        if (comb.min == right.min) comb.minCount += right.minCount;
+        return comb;
     }
     
-    template<bool IsGcd>
-    void st_min_build(const vll& src, rmq_v& sTree, int n, int nL, int nR) {
+    void st_min_build(const vi& src, rmq_v& sTree, int n, int nL, int nR) {
         if (nL == nR)
-            sTree[n] = std::make_pair(src[nL], 1);
+            sTree[n] = Node { src[nL], 1, src[nL] };
         else {
             int nMed = (nL + nR) >> 1;
-            st_min_build<IsGcd>(src, sTree, n << 1, nL, nMed);
-            st_min_build<IsGcd>(src, sTree, (n << 1)+1, nMed+1, nR);
-            sTree[n] = combine<IsGcd>(sTree[n << 1], sTree[(n << 1)+1]);
+            st_min_build(src, sTree, n << 1, nL, nMed);
+            st_min_build(src, sTree, (n << 1)+1, nMed+1, nR);
+            sTree[n] = combine(sTree[n << 1], sTree[(n << 1)+1]);
         }
     }
     
-    template<bool IsGcd>
     rmq_t st_min_get(const rmq_v& sTree, int n, int nL, int nR, int reqL, int reqR) {
         if (reqL > reqR)
-            return IsGcd ? std::make_pair(0, 0) : std::make_pair(INF, 0);
+            return Node{};
         if (reqL == nL && reqR == nR)
             return sTree[n];
         
         int nMed = (nL + nR) >> 1;
-        rmq_t leftMin = st_min_get<IsGcd>(sTree, n << 1, nL, nMed, reqL, std::min(nMed, reqR));
-        rmq_t rightMin = st_min_get<IsGcd>(sTree, (n << 1)+1, nMed+1, nR, std::max(nMed+1, reqL), reqR);
-        return combine<IsGcd>(leftMin, rightMin);
+        rmq_t left = st_min_get(sTree, n << 1, nL, nMed, reqL, std::min(nMed, reqR));
+        rmq_t right = st_min_get(sTree, (n << 1)+1, nMed+1, nR, std::max(nMed+1, reqL), reqR);
+        return combine(left, right);
     }
     
     void preprocess() {
-        st_min_vec.assign(n*4, std::make_pair(INF, 0));
-        st_min_build<false>(s, st_min_vec, 1, 0, (int)s.size()-1);
-        
-        st_gcd_vec.assign(n*4, std::make_pair(0, 0));
-        st_min_build<true>(s, st_gcd_vec, 1, 0, (int)s.size()-1);
+        st_min_vec.assign(n*4, Node{});
+        st_min_build(s, st_min_vec, 1, 0, (int)s.size()-1);
     }
     
     int solve(int l, int r) {
-        auto minPair = st_min_get<false>(st_min_vec, 1, 0, (int)s.size()-1, l ,r);
-        auto gcdPair = st_min_get<true>(st_gcd_vec, 1, 0, (int)s.size()-1, l ,r);
+        auto node = st_min_get(st_min_vec, 1, 0, (int)s.size()-1, l ,r);
         
         int eaten = r - l + 1;
-        if (minPair.first == gcdPair.first) {
-            eaten -= minPair.second;
+        if (node.min == node.gcd) {
+            eaten -= node.minCount;
         }
         return eaten;
     }
@@ -130,6 +123,5 @@ int problem_474F(int argc, const char * argv[])
         
         std::cout << solve(l-1, r-1) << std::endl;
     }
-    
     return 0;
 }
