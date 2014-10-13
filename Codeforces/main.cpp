@@ -25,6 +25,8 @@ int problem_474C(int argc, const char * argv[]);
 int problem_474D(int argc, const char * argv[]);
 int problem_474E(int argc, const char * argv[]);
 int problem_474F(int argc, const char * argv[]);
+int problem_475A(int argc, const char * argv[]);
+int problem_475B(int argc, const char * argv[]);
 
 int problem_UVa562(int argc, const char * argv[]);
 int problem_UVa10616(int argc, const char * argv[]);
@@ -37,6 +39,6 @@ int main(int argc, const char * argv[])
     std::ifstream in("input.txt");
     std::cin.rdbuf(in.rdbuf());
     
-    return problem_474F(argc, argv);
+    return problem_475B(argc, argv);
 }
 
