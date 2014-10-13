@@ -18,7 +18,7 @@
 
 
 // 474F - Mole & ant genocide
-// Method: Segment tree & gcd
+// Method: Segment tree & gcd, binary search
 
 namespace {
     using namespace std;
@@ -47,58 +47,60 @@ namespace {
     vi s;
     int t;
     
-    struct Node {
-        int min, minCount, gcd;
-        
-        explicit Node(int min = INF, int minCount = 0, int gcd = 0) : min(min), minCount(minCount), gcd(gcd) {}
-    };
-    using rmq_t = Node;     // min(s[i]) -> count; gcd
+    using rmq_t = int;     // gcd
     using rmq_v = std::vector<rmq_t>;
-    rmq_v st_min_vec; // segment tree
+    rmq_v st_gcd_vec; // segment tree for gcd
     
     inline rmq_t combine(const rmq_t& left, const rmq_t& right) {
-        rmq_t comb;
-        comb.gcd = gcd(left.gcd, right.gcd);
-        comb.min = std::min(left.min, right.min);
-        if (comb.min == left.min) comb.minCount += left.minCount;
-        if (comb.min == right.min) comb.minCount += right.minCount;
-        return comb;
+        return gcd(left, right);
     }
     
-    void st_min_build(const vi& src, rmq_v& sTree, int n, int nL, int nR) {
+    void st_build(const vi& src, rmq_v& sTree, int n, int nL, int nR) {
         if (nL == nR)
-            sTree[n] = Node { src[nL], 1, src[nL] };
+            sTree[n] = src[nL];
         else {
             int nMed = (nL + nR) >> 1;
-            st_min_build(src, sTree, n << 1, nL, nMed);
-            st_min_build(src, sTree, (n << 1)+1, nMed+1, nR);
+            st_build(src, sTree, n << 1, nL, nMed);
+            st_build(src, sTree, (n << 1)+1, nMed+1, nR);
             sTree[n] = combine(sTree[n << 1], sTree[(n << 1)+1]);
         }
     }
     
-    rmq_t st_min_get(const rmq_v& sTree, int n, int nL, int nR, int reqL, int reqR) {
+    rmq_t st_get(const rmq_v& sTree, int n, int nL, int nR, int reqL, int reqR) {
         if (reqL > reqR)
-            return Node{};
+            return 0;
         if (reqL == nL && reqR == nR)
             return sTree[n];
         
         int nMed = (nL + nR) >> 1;
-        rmq_t left = st_min_get(sTree, n << 1, nL, nMed, reqL, std::min(nMed, reqR));
-        rmq_t right = st_min_get(sTree, (n << 1)+1, nMed+1, nR, std::max(nMed+1, reqL), reqR);
+        rmq_t left = st_get(sTree, n << 1, nL, nMed, reqL, std::min(nMed, reqR));
+        rmq_t right = st_get(sTree, (n << 1)+1, nMed+1, nR, std::max(nMed+1, reqL), reqR);
         return combine(left, right);
     }
     
+    vii min_bindex;
+    
     void preprocess() {
-        st_min_vec.assign(n*4, Node{});
-        st_min_build(s, st_min_vec, 1, 0, (int)s.size()-1);
+        min_bindex.assign(n, mpair(0, 0));
+        REP(i, s.size()) {
+            min_bindex[i] = mpair(s[i], i);
+        }
+        std::sort(ALL(min_bindex));
+        
+        st_gcd_vec.assign(n*4, 0);
+        st_build(s, st_gcd_vec, 1, 0, (int)s.size()-1);
     }
     
     int solve(int l, int r) {
-        auto node = st_min_get(st_min_vec, 1, 0, (int)s.size()-1, l ,r);
+        auto gcd = st_get(st_gcd_vec, 1, 0, (int)s.size()-1, l ,r);
+
+        // [leftMinIdx;rightMinIdx]
+        int leftMinIdx = (int)(std::lower_bound(ALL(min_bindex), mpair(gcd, l)) - min_bindex.begin());
+        int rightMinIdx = (int)(std::upper_bound(ALL(min_bindex), mpair(gcd, r)) - min_bindex.begin()) - 1;
         
         int eaten = r - l + 1;
-        if (node.min == node.gcd) {
-            eaten -= node.minCount;
+        if (min_bindex[leftMinIdx].first == gcd) {
+            eaten -= (rightMinIdx - leftMinIdx + 1);
         }
         return eaten;
     }
