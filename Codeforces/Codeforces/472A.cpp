@@ -1,8 +1,8 @@
 //
-//  475A.cpp
+//  472A.cpp
 //  Codeforces
 //
-//  Created by Vladimir Shishov on 12/10/14.
+//  Created by Vladimir Shishov on 13/10/14.
 //  Copyright (c) 2014 Vladimir Shishov. All rights reserved.
 //
 
@@ -11,14 +11,15 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <stack>
 #include <algorithm>
 #include <iterator>
 #include <cmath>
 #include <cstring>
 
 
-// 475A - Dreamoon and steps
-// Method: Impl/math
+// 472A - Tasks from math
+// Method: Math
 
 namespace {
     using namespace std;
@@ -43,26 +44,18 @@ namespace {
 #define FOR(i,a,b) for(int i=a; i < (b); ++i)
 #define D(a) cout << #a ": " << a << endl;
     
-    int n, m;
+    int n;
 }
 
-int problem_475A(int argc, const char * argv[])
+int problem_472A(int argc, const char * argv[])
 {
     std::ios_base::sync_with_stdio(false);
     
-    std::cin >> n >> m;
+    std::cin >> n;
     
-    int ans = -1;
-    
-    if (n >= m) {
-        ans = n / 2 + n % 2;
-        
-        while (true) {
-            if (ans % m == 0)
-                break;
-            ++ans;
-        }
-    }
-    std::cout << ans << std::endl;
+    int x = 0, y = 0;
+    x = (n % 2 == 0) ? 4 : 9;
+    y = n - x;
+    std::cout << x << " " << y << std::endl;
     return 0;
 }

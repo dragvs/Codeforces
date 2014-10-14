@@ -18,8 +18,8 @@
 #include <cstring>
 
 
-// 475B -
-// Method:
+// 475B - Dreamoon and WiFi
+// Method: Impl / complete search
 
 namespace {
     using namespace std;
