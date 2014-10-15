@@ -17,6 +17,7 @@
 #include <cmath>
 #include <cstring>
 #include <string>
+#include <cassert>
 
 
 // 475E - Dreamoon and strings
@@ -29,9 +30,6 @@ namespace {
     using vi = std::vector<int>;
     using vii = std::vector<ii>;
     using vll = std::vector<ll>;
-    
-    using ss = std::pair<std::string, std::string>;
-    using vss = std::vector<ss>;
     
     const int INF = 1e9;
     const int MAX_COUNT = 1e5;
@@ -57,11 +55,11 @@ namespace {
 //            - Do not remove current/skip it -> take value from (Idx+1; R)
 //            - If possible - Start subseq at current idx -> sum 1 with value at (Idx+Len(p);R-A[Idx])
         if (idx > sSize || (removalLeft > 0 && idx == sSize) || removalLeft < 0)
-            return -1;
+            return -INF;
         if (idx == sSize)
             return 0;
         
-        if (DP[idx][removalLeft] != -2)
+        if (DP[idx][removalLeft] != -1)
             return DP[idx][removalLeft];
         
         int removeRes = solveTopDown(idx+1, removalLeft-1);
@@ -71,9 +69,7 @@ namespace {
         if (A[idx] > 0) {
             int delNumber = A[idx] - tSize;
             int startSeqRes = solveTopDown(idx + A[idx], removalLeft - delNumber);
-            
-            if (startSeqRes != -1)
-                res = std::max(res, startSeqRes+1);
+            res = std::max(res, startSeqRes+1);
         }
         DP[idx][removalLeft] = res;
         return res;
@@ -105,7 +101,7 @@ int problem_475E(int argc, const char * argv[])
         A[i] = possible ? srcI-i : -1;
     }
     
-    std::fill_n(&DP[0][0], 2100*2100, -2);
+    std::fill_n(&DP[0][0], 2100*2100, -1);
     
     for (int k = 0; k <= sSize; ++k) {
         int res = solveTopDown(0, k);

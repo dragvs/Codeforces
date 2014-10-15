@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 
+int problem_118D(int argc, const char * argv[]);
 
 int problem_466C(int argc, const char * argv[]);
 
@@ -29,6 +30,8 @@ int problem_474F(int argc, const char * argv[]);
 
 int problem_475A(int argc, const char * argv[]);
 int problem_475B(int argc, const char * argv[]);
+int problem_475C(int argc, const char * argv[]);
+int problem_475D(int argc, const char * argv[]);
 int problem_475E(int argc, const char * argv[]);
 
 int problem_UVa562(int argc, const char * argv[]);
@@ -42,6 +45,6 @@ int main(int argc, const char * argv[])
     std::ifstream in("input.txt");
     std::cin.rdbuf(in.rdbuf());
     
-    return problem_475E(argc, argv);
+    return problem_118D(argc, argv);
 }
 
