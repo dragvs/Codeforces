@@ -44,32 +44,21 @@ namespace {
 #define D(a) cout << #a ": " << a << endl;
     
     int n1, n2, k1, k2;
-    ll dpMemo[110][110][15][15];
+    int dpMemo[101][101][11][11];
     
-    ll solveTopDown(int remN1, int remN2, int seqN1, int seqN2) {
+    int solveTopDown(int remN1, int remN2, int seqN1, int seqN2) {
         assert(seqN1 == 0 || seqN2 == 0);
         if (remN1 < 0 || remN2 < 0 || seqN1 > k1 || seqN2 > k2)
             return 0;
         if (remN1 == 0 && remN2 == 0)
             return 1;
         
-        ll* dpPtr = &dpMemo[remN1][remN2][seqN1][seqN2];
+        int* dpPtr = &dpMemo[remN1][remN2][seqN1][seqN2];
         if (*dpPtr != -1)
             return *dpPtr;
         
-        ll res = 0;
-        
-        if (seqN1 > 0) {
-            res = (res + solveTopDown(remN1-1, remN2, seqN1+1, 0)) % MOD;
-            res = (res + solveTopDown(remN1, remN2-1, 0, 1)) % MOD;
-        } else if (seqN2 > 0) {
-            res = (res + solveTopDown(remN1-1, remN2, 1, 0)) % MOD;
-            res = (res + solveTopDown(remN1, remN2-1, 0, seqN2+1)) % MOD;
-        } else {
-            res = (res + solveTopDown(remN1-1, remN2, 1, 0)) % MOD;
-            res = (res + solveTopDown(remN1, remN2-1, 0, 1)) % MOD;
-        }
-        
+        int res = (solveTopDown(remN1-1, remN2, seqN1+1, 0) +
+                  solveTopDown(remN1, remN2-1, 0, seqN2+1)) % MOD;
         *dpPtr = res;
         return res;
     }
@@ -81,7 +70,7 @@ int problem_118D(int argc, const char * argv[])
     
     std::cin >> n1 >> n2 >> k1 >> k2;
     
-    std::fill_n(&dpMemo[0][0][0][0], sizeof(dpMemo)/sizeof(ll), -1LL);
+    std::fill_n(&dpMemo[0][0][0][0], sizeof(dpMemo)/sizeof(int), -1);
     std::cout << solveTopDown(n1, n2, 0, 0) << std::endl;
     
     return 0;
