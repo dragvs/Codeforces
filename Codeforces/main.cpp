@@ -39,6 +39,12 @@ int problem_478B(int argc, const char * argv[]);
 int problem_478C(int argc, const char * argv[]);
 int problem_478D(int argc, const char * argv[]);
 
+int problem_479A(int argc, const char * argv[]);
+int problem_479B(int argc, const char * argv[]);
+int problem_479C(int argc, const char * argv[]);
+int problem_479D(int argc, const char * argv[]);
+int problem_479E(int argc, const char * argv[]);
+
 int problem_UVa562(int argc, const char * argv[]);
 int problem_UVa10616(int argc, const char * argv[]);
 int problem_UVa10819(int argc, const char * argv[]);
@@ -47,9 +53,18 @@ int problem_UVa11832(int argc, const char * argv[]);
 
 int main(int argc, const char * argv[])
 {
-    std::ifstream in("input.txt");
-    std::cin.rdbuf(in.rdbuf());
+    bool stdin_emul = false;
     
-    return problem_478D(argc, argv);
+    if (argc > 1) {
+        if (strncmp("-stdin_emul", argv[1], 15) == 0)
+            stdin_emul = true;
+    }
+
+    std::ifstream in("input.txt");
+    if (stdin_emul) {
+        std::cin.rdbuf(in.rdbuf());
+    }
+    
+    return problem_479E(argc, argv);
 }
 
