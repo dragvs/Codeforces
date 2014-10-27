@@ -45,6 +45,10 @@ int problem_479C(int argc, const char * argv[]);
 int problem_479D(int argc, const char * argv[]);
 int problem_479E(int argc, const char * argv[]);
 
+int problem_483A(int argc, const char * argv[]);
+int problem_483B(int argc, const char * argv[]);
+int problem_483C(int argc, const char * argv[]);
+
 int problem_UVa562(int argc, const char * argv[]);
 int problem_UVa10616(int argc, const char * argv[]);
 int problem_UVa10819(int argc, const char * argv[]);
@@ -65,6 +69,6 @@ int main(int argc, const char * argv[])
         std::cin.rdbuf(in.rdbuf());
     }
     
-    return problem_479E(argc, argv);
+    return problem_483A(argc, argv);
 }
 
