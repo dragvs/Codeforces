@@ -23,6 +23,7 @@ int problem_466C(int argc, const char * argv[]);
 int problem_471A(int argc, const char * argv[]);
 int problem_471B(int argc, const char * argv[]);
 int problem_471C(int argc, const char * argv[]);
+int problem_471D(int argc, const char * argv[]);
 
 int problem_472A(int argc, const char * argv[]);
 int problem_472B(int argc, const char * argv[]);
@@ -76,6 +77,6 @@ int main(int argc, const char * argv[])
         std::cin.rdbuf(in.rdbuf());
     }
     
-    return problem_463D(argc, argv);
+    return problem_471D(argc, argv);
 }
 
