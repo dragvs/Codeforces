@@ -8,8 +8,13 @@
 
 #include <iostream>
 #include <fstream>
+#include <random>
+
+int run(int argc, const char * argv[]);
 
 int problem_118D(int argc, const char * argv[]);
+
+int problem_378B(int argc, const char * argv[]);
 
 int problem_463A(int argc, const char * argv[]);
 int problem_463B(int argc, const char * argv[]);
@@ -63,8 +68,31 @@ int problem_UVa10819(int argc, const char * argv[]);
 int problem_UVa11832(int argc, const char * argv[]);
 
 
+int generateRandomInt(int from, int to) {
+    std::random_device rd; // for seed
+    std::minstd_rand engine(rd());
+    std::uniform_int_distribution<int> uniform_dist(from, to);
+    return uniform_dist(engine);
+}
+
+//#define GENERATE
+
 int main(int argc, const char * argv[])
 {
+#ifdef GENERATE
+    std::ofstream testIn("input.txt");
+    
+    int n = 200000;
+    testIn << n << std::endl;
+    
+    for (int i = 0; i < n; ++i) {
+        testIn << (i + 1) << " ";
+    }
+    
+    testIn.close();
+    return 0;
+#endif
+    
     bool stdin_emul = false;
     
     if (argc > 1) {
@@ -77,6 +105,6 @@ int main(int argc, const char * argv[])
         std::cin.rdbuf(in.rdbuf());
     }
     
-    return problem_471D(argc, argv);
+    return run(argc, argv);
 }
 
