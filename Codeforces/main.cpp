@@ -75,6 +75,8 @@ int generateRandomInt(int from, int to) {
     return uniform_dist(engine);
 }
 
+#define REP(k,a) for(int k=0; k < (a); ++k)
+
 //#define GENERATE
 
 int main(int argc, const char * argv[])
@@ -82,15 +84,27 @@ int main(int argc, const char * argv[])
 #ifdef GENERATE
     std::ofstream testIn("input.txt");
     
-    int n = 200000;
-    testIn << n << std::endl;
+//    int n = 40000;
+//    testIn << n << std::endl;
+//    
+//    for (int i = 0; i < n; ++i) {
+////        testIn << (i + 1) << " ";
+//        testIn << 3 << " ";
+//    }
+    int m = generateRandomInt(1, 10);
+    int n = generateRandomInt(1, 10);
+    testIn << m << " " << n << std::endl;
     
-    for (int i = 0; i < n; ++i) {
-        testIn << (i + 1) << " ";
+    REP(i, m) {
+        REP(j, n) {
+            int val = generateRandomInt(0, 1);
+            testIn << val << " ";
+        }
+        testIn << std::endl;
     }
     
     testIn.close();
-    return 0;
+//    return 0;
 #endif
     
     bool stdin_emul = false;
