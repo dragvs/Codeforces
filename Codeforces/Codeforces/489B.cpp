@@ -1,8 +1,8 @@
 //
-//  486C.cpp
+//  489B.cpp
 //  Codeforces
 //
-//  Created by Vladimir Shishov on 11/11/14.
+//  Created by Vladimir Shishov on 24/11/14.
 //  Copyright (c) 2014 Vladimir Shishov. All rights reserved.
 //
 
@@ -23,7 +23,7 @@
 #include <ios>
 
 
-// 486C -
+// 489B -
 // Method:
 
 namespace {
@@ -56,51 +56,48 @@ namespace {
 #define FOR(i,a,b) for(int i=a; i < (b); ++i)
 #define D(a) cout << #a ": " << a << endl;
     
-    int n, p;
-    string str;
+    int n, m;
 }
 
 RUN_PROBLEM
 {
     std::ios_base::sync_with_stdio(false);
     
-    cin >> n >> p;
-    cin >> str;
+    cin >> n;
+    vi aVec;
+    aVec.resize(n, 0);
     
-    // a - 1, z - 26
-    ll switchCnt = 0;
-    int leftIdx = -1, rightIdx = -1;
+    REP(i, n) {
+        cin >> aVec[i];
+    }
     
-    for (int i = 0; i < n/2; ++i) {
-        int a = str[i] - 'a';
-        int b = str[n - 1 - i] - 'a';
+    cin >> m;
+    vi bVec;
+    bVec.resize(m, 0);
+    
+    REP(i, m) {
+        cin >> bVec[i];
+    }
+    
+    sort(ALL(aVec), std::greater<int>());
+    sort(ALL(bVec), std::greater<int>());
+    
+    int aIdx = 0, bIdx = 0;
+    int ans = 0;
+    
+    while(aIdx < aVec.size() && bIdx < bVec.size()) {
+        int male = aVec[aIdx];
+        int fem = bVec[bIdx];
         
-        int dist = abs(a - b);
-        if (dist > 13)
-            dist = 26 - dist;
-        switchCnt += dist;
-            
-        if (dist != 0) {
-            if (leftIdx == -1)
-                leftIdx = i;
-            rightIdx = i;
+        if (abs(male - fem) <= 1) {
+            ++ans;
+            ++aIdx;
+            ++bIdx;
+        } else if (male > fem) {
+            ++aIdx;
+        } else if (fem > male) {
+            ++bIdx;
         }
-    }
-    
-    int pos = p;
-    if (pos > n/2) {
-        pos = n - p + 1;
-    }
-    --pos;
-    
-    ll ans = switchCnt;
-
-    if (leftIdx != -1) {
-        int rightSteps = max(rightIdx - pos, 0);
-        int leftSteps = max(pos - leftIdx, 0);
-        
-        ans += min(leftSteps, rightSteps) * 2;
-        ans += max(leftSteps, rightSteps);
     }
     
     cout << ans << endl;

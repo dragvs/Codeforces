@@ -1,8 +1,8 @@
 //
-//  486C.cpp
+//  490A.cpp
 //  Codeforces
 //
-//  Created by Vladimir Shishov on 11/11/14.
+//  Created by Vladimir Shishov on 23/11/14.
 //  Copyright (c) 2014 Vladimir Shishov. All rights reserved.
 //
 
@@ -23,7 +23,7 @@
 #include <ios>
 
 
-// 486C -
+// 490A -
 // Method:
 
 namespace {
@@ -56,53 +56,38 @@ namespace {
 #define FOR(i,a,b) for(int i=a; i < (b); ++i)
 #define D(a) cout << #a ": " << a << endl;
     
-    int n, p;
-    string str;
+    int n;
 }
 
 RUN_PROBLEM
 {
     std::ios_base::sync_with_stdio(false);
     
-    cin >> n >> p;
-    cin >> str;
+    cin >> n;
+    int t = 0;
+    vi progV, mathV, physV;
     
-    // a - 1, z - 26
-    ll switchCnt = 0;
-    int leftIdx = -1, rightIdx = -1;
-    
-    for (int i = 0; i < n/2; ++i) {
-        int a = str[i] - 'a';
-        int b = str[n - 1 - i] - 'a';
-        
-        int dist = abs(a - b);
-        if (dist > 13)
-            dist = 26 - dist;
-        switchCnt += dist;
-            
-        if (dist != 0) {
-            if (leftIdx == -1)
-                leftIdx = i;
-            rightIdx = i;
+    REP(i, n) {
+        cin >> t;
+        if (t == 1) {
+            progV.push_back(i);
+        } else if (t == 2) {
+            mathV.push_back(i);
+        } else if (t == 3) {
+            physV.push_back(i);
         }
     }
     
-    int pos = p;
-    if (pos > n/2) {
-        pos = n - p + 1;
-    }
-    --pos;
-    
-    ll ans = switchCnt;
-
-    if (leftIdx != -1) {
-        int rightSteps = max(rightIdx - pos, 0);
-        int leftSteps = max(pos - leftIdx, 0);
-        
-        ans += min(leftSteps, rightSteps) * 2;
-        ans += max(leftSteps, rightSteps);
-    }
+    int ans = (int)progV.size();
+    ans = min(ans, (int)mathV.size());
+    ans = min(ans, (int)physV.size());
     
     cout << ans << endl;
+    
+    if (ans > 0) {
+        REP(i, ans) {
+            cout << (progV[i]+1) << " " << (mathV[i]+1) << " " << (physV[i] + 1) << endl;
+        }
+    }
     return 0;
 }

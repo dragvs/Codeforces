@@ -1,8 +1,8 @@
 //
-//  486C.cpp
+//  489A.cpp
 //  Codeforces
 //
-//  Created by Vladimir Shishov on 11/11/14.
+//  Created by Vladimir Shishov on 24/11/14.
 //  Copyright (c) 2014 Vladimir Shishov. All rights reserved.
 //
 
@@ -23,7 +23,7 @@
 #include <ios>
 
 
-// 486C -
+// 489A -
 // Method:
 
 namespace {
@@ -56,53 +56,46 @@ namespace {
 #define FOR(i,a,b) for(int i=a; i < (b); ++i)
 #define D(a) cout << #a ": " << a << endl;
     
-    int n, p;
-    string str;
+    int n;
 }
 
 RUN_PROBLEM
 {
     std::ios_base::sync_with_stdio(false);
     
-    cin >> n >> p;
-    cin >> str;
+    cin >> n;
     
-    // a - 1, z - 26
-    ll switchCnt = 0;
-    int leftIdx = -1, rightIdx = -1;
+    vll elems;
+    elems.resize(n, 0);
     
-    for (int i = 0; i < n/2; ++i) {
-        int a = str[i] - 'a';
-        int b = str[n - 1 - i] - 'a';
+    REP(i, n) {
+        cin >> elems[i];
+    }
+    
+    vii ansVec;
+    
+    for (int i = 0; i < n-1; ++i) {
+        ll cur = elems[i];
+        int minIdx = i;
+        ll min = cur;
         
-        int dist = abs(a - b);
-        if (dist > 13)
-            dist = 26 - dist;
-        switchCnt += dist;
-            
-        if (dist != 0) {
-            if (leftIdx == -1)
-                leftIdx = i;
-            rightIdx = i;
+        for (int j = i+1; j < n; ++j) {
+            if (min > elems[j]) {
+                minIdx = j;
+                min = elems[j];
+            }
+        }
+        if (minIdx != i) {
+            std::swap(elems[i], elems[minIdx]);
+            ansVec.push_back(mpair(i, minIdx));
         }
     }
     
-    int pos = p;
-    if (pos > n/2) {
-        pos = n - p + 1;
-    }
-    --pos;
+    cout << ansVec.size() << endl;
     
-    ll ans = switchCnt;
-
-    if (leftIdx != -1) {
-        int rightSteps = max(rightIdx - pos, 0);
-        int leftSteps = max(pos - leftIdx, 0);
-        
-        ans += min(leftSteps, rightSteps) * 2;
-        ans += max(leftSteps, rightSteps);
+    REP(i, ansVec.size()) {
+        cout << ansVec[i].first << " " << ansVec[i].second << endl;
     }
     
-    cout << ans << endl;
     return 0;
 }

@@ -1,8 +1,8 @@
 //
-//  486C.cpp
+//  488A.cpp
 //  Codeforces
 //
-//  Created by Vladimir Shishov on 11/11/14.
+//  Created by Vladimir Shishov on 23/11/14.
 //  Copyright (c) 2014 Vladimir Shishov. All rights reserved.
 //
 
@@ -23,7 +23,7 @@
 #include <ios>
 
 
-// 486C -
+// 488A -
 // Method:
 
 namespace {
@@ -41,7 +41,7 @@ namespace {
     template<typename T> inline T gcd(T a, T b) { return b ? gcd(b, a%b) : a; }
     template<typename T, typename U> inline std::pair<T, U> mpair(T a, U b) { return std::make_pair(a, b); }
     
-//#define ACTIVE
+    //#define ACTIVE
     
 #ifdef ONLINE_JUDGE
 #   define RUN_PROBLEM int main(int argc, const char * argv[])
@@ -56,51 +56,41 @@ namespace {
 #define FOR(i,a,b) for(int i=a; i < (b); ++i)
 #define D(a) cout << #a ": " << a << endl;
     
-    int n, p;
-    string str;
+    ll n;
+    
+    bool check(ll val) {
+        val = abs(val);
+        
+        while (val > 0) {
+            ll dig = val % 10;
+            val /= 10;
+            
+            if (dig == 8)
+                return true;
+        }
+        return false;
+    }
 }
 
 RUN_PROBLEM
 {
     std::ios_base::sync_with_stdio(false);
     
-    cin >> n >> p;
-    cin >> str;
+    cin >> n;
     
-    // a - 1, z - 26
-    ll switchCnt = 0;
-    int leftIdx = -1, rightIdx = -1;
+    int ans = 0;
     
-    for (int i = 0; i < n/2; ++i) {
-        int a = str[i] - 'a';
-        int b = str[n - 1 - i] - 'a';
-        
-        int dist = abs(a - b);
-        if (dist > 13)
-            dist = 26 - dist;
-        switchCnt += dist;
+    if (n == 0) {
+        ans = 8;
+    } else {
+        for (int i = 1; i < 21; ++i) {
+            ++n;
             
-        if (dist != 0) {
-            if (leftIdx == -1)
-                leftIdx = i;
-            rightIdx = i;
+            if (check(n)) {
+                ans = i;
+                break;
+            }
         }
-    }
-    
-    int pos = p;
-    if (pos > n/2) {
-        pos = n - p + 1;
-    }
-    --pos;
-    
-    ll ans = switchCnt;
-
-    if (leftIdx != -1) {
-        int rightSteps = max(rightIdx - pos, 0);
-        int leftSteps = max(pos - leftIdx, 0);
-        
-        ans += min(leftSteps, rightSteps) * 2;
-        ans += max(leftSteps, rightSteps);
     }
     
     cout << ans << endl;
